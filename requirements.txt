@@ -1,0 +1,4 @@
+# Add your Python 'Pip' dependencies to this file, with one dependency on each line.
+# Hypar will automatically install these when it publishes your function.
+ladybug-core
+jsonpickle
