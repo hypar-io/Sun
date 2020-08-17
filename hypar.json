@@ -2,7 +2,7 @@
   "$schema": "https://hypar.io/Schemas/Function.json",
   "id": "8dbda1f6-940b-41bf-b2af-1fc207ed8fcb",
   "name": "Ladybug Sunpath",
-  "description": "The LadybugSunpath function.",
+  "description": "The Ladybug sun path function.",
   "language": "Python",
   "inputs": [
     {
