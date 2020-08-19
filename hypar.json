@@ -4,32 +4,28 @@
   "name": "Ladybug Sunpath",
   "description": "The Ladybug sun path function.",
   "language": "Python",
-  "inputs": [
-    {
-      "min": 1.0,
-      "max": 10.0,
-      "step": 1.0,
-      "unit_type": "none",
-      "name": "Length",
-      "description": "The length.",
-      "type": "range"
-    },
-    {
-      "min": 1.0,
-      "max": 10.0,
-      "step": 1.0,
-      "unit_type": "none",
-      "name": "Width",
-      "description": "The width.",
-      "type": "range"
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "Date": {
+        "type": "string",
+        "format": "date-time",
+        "description": "The time and date which define the sun's position."
+      }
     }
-  ],
+  },
   "outputs": [
     {
       "unit_type": "none",
       "name": "Volume",
       "description": "The volume.",
       "type": "number"
+    }
+  ],
+  "model_dependencies": [
+    {
+      "name": "location",
+      "optional": false
     }
   ],
   "repository_url": "https://github.com/hypar-io/function",

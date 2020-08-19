@@ -38,9 +38,4 @@ def execute(models, inputs):
             model_curve = Elements.ModelPoints(vertices, material.Id)
             model.add_element(model_curve)
 
-    model_json = json.dumps(model, default=lambda x: x.__dict__)
-    # print(model_json)
-    # out = open("test.json", "w")
-    # out.write(model_json)
-    # out.close()
-    return {'Area': 0, 'Model': model_json}
+    return {'Area': 0, 'Model': model}
