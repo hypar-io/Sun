@@ -7,6 +7,16 @@
   "input_schema": {
     "type": "object",
     "properties": {
+      "Location": {
+        "description": "The location where the sun path will be calculated.",
+        "default": {
+          "coordinates": [
+            -118.405961,
+            34.005765
+          ]
+        },
+        "$ref": "https://geojson.org/schema/Point.json"
+      },
       "Date": {
         "type": "string",
         "format": "date-time",
@@ -14,20 +24,7 @@
       }
     }
   },
-  "outputs": [
-    {
-      "unit_type": "none",
-      "name": "Volume",
-      "description": "The volume.",
-      "type": "number"
-    }
-  ],
-  "model_dependencies": [
-    {
-      "name": "location",
-      "optional": false
-    }
-  ],
+  "outputs": [],
   "repository_url": "https://github.com/hypar-io/function",
   "source_file_key": null,
   "preview_image": null

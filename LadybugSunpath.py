@@ -7,13 +7,10 @@ import sys
 
 
 def execute(models, inputs):
-    # Create location. You can also extract location data from an epw file.
-    sydney = Location('Sydney', 'AUS', latitude=-33.87,
-                      longitude=151.22, time_zone=10)
 
-    # Initiate sunpath
-    sp = Sunpath.from_location(sydney)
-
+    # TODO: Do we need to set the time zone?
+    sp = Sunpath(inputs['Location']['coordinates'][1],
+                 inputs['Location']['coordinates'][0])
     radius = 100
 
     material = Elements.Material(
@@ -22,7 +19,9 @@ def execute(models, inputs):
     model.add_element(material)
 
     for month in range(1, 12):
+        # print('Calculating month {}'.format(month))
         for day in range(1, 28):
+            # print('Calculating day {}'.format(day))
             vertices = []
             for hour in range(0, 24):
                 sun = sp.calculate_sun(month=month, day=day, hour=hour)
@@ -38,4 +37,4 @@ def execute(models, inputs):
             model_curve = Elements.ModelPoints(vertices, material.Id)
             model.add_element(model_curve)
 
-    return {'Area': 0, 'Model': model}
+    return {'Model': model}
