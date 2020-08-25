@@ -2,12 +2,10 @@ import Elements
 from ladybug.location import Location
 from ladybug.sunpath import Sunpath
 from ladybug_geometry.geometry3d import Vector3D
-
 import json
 import math
 import sys
 from datetime import datetime
-# from scipy.spatial.transform import Rotation
 
 
 def execute(models, inputs):
