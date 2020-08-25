@@ -2,7 +2,6 @@ import uuid
 
 
 class Bezier(object):
-    # public Bezier(List<Vector3> controlPoints, FrameType frameType = FrameType.Frenet)
     def __init__(self, controlPoints, frameType='Frenet'):
         if controlPoints is not None and len(controlPoints) > 0:
             self.ControlPoints = controlPoints
@@ -18,6 +17,7 @@ class Vector3(object):
         self.X = x
         self.Y = y
         self.Z = z
+        self.discriminator = 'Elements.Geometry.Vector3'
 
 
 class Line(object):
@@ -140,3 +140,11 @@ class Matrix(object):
                                0.0,
                                1.0,
                                0.0]
+
+
+class DirectionalLight(Element):
+    def __init__(self, color, intensity, transform, id=None, name=None):
+        Element.__init__(self, id, name)
+        self.Color = color
+        self.Intensity = intensity
+        self.Transform = transform
