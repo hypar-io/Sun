@@ -148,3 +148,4 @@ class DirectionalLight(Element):
         self.Color = color
         self.Intensity = intensity
         self.Transform = transform
+        self.discriminator = 'Elements.DirectionalLight'

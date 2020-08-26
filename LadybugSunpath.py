@@ -9,11 +9,25 @@ from datetime import datetime
 
 
 def execute(models, inputs):
+    radius = inputs['Radius']
 
-    # TODO: Do we need to set the time zone?
-    sp = Sunpath(inputs['Location']['coordinates'][1],
-                 inputs['Location']['coordinates'][0])
-    radius = 100
+    location_model = models.get('location')
+    if location_model is None:
+        raise Exception('The location model was not provided.')
+
+    latitude = 0.0
+    longitude = 0.0
+
+    elements = location_model['Elements']
+    for id in elements:
+        e = elements[id]
+        d = e.get('discriminator')
+        if d is not None:
+            if d == 'Elements.Origin':
+                longitude = e['Position'][0]
+                latitude = e['Position'][1]
+
+    sp = Sunpath(latitude, longitude)
 
     dt = datetime.fromisoformat(inputs['Date'])
 
@@ -38,32 +52,35 @@ def execute(models, inputs):
                     elevation = sun.altitude_in_radians
 
                     # https://en.wikipedia.org/wiki/Spherical_coordinate_system
-                    x = radius * math.cos(elevation) * math.sin(azimuth)
-                    y = radius * math.cos(elevation) * math.cos(azimuth)
-                    z = radius * math.sin(elevation)
+                    x = math.cos(elevation) * math.sin(azimuth)
+                    y = math.cos(elevation) * math.cos(azimuth)
+                    z = math.sin(elevation)
 
                     if dt.hour == hour:
-                        vertices.append(Elements.Vector3(x, y, z))
+                        vertices.append(Elements.Vector3(
+                            x * radius, y * radius, z * radius))
                     else:
-                        vertices_back.append(Elements.Vector3(x, y, z))
+                        vertices_back.append(Elements.Vector3(
+                            x * radius, y * radius, z * radius))
 
                     # If the current date time corresponds to the input
                     # date time, then create a light
                     if dt.month == month and dt.day == day and dt.hour == hour:
-                        v = Vector3D.from_array([x, y, z]).reverse()
-                        up = Vector3D.from_array([0, 0, 1])
-                        right = v.cross(up)
+                        v = Vector3D.from_array([x, y, z]).normalize()
+                        tmp = Vector3D.from_array([0.0, 0.0, 1.0]).normalize()
+                        right = v.cross(tmp).normalize()
+                        up = right.cross(v).normalize()
 
                         em = Elements.Matrix([])
-                        em.Components = [right.x, right.y, right.z, 0,
-                                         v.x, v.y, v.z, 0,
-                                         up.x, up.y, up.z, 0,
-                                         x, y, z, 1]
+                        em.Components = [right.x, up.x, v.x, 0,
+                                         right.y, up.y, v.y, 0,
+                                         right.z, up.z, v.z, 0]
                         light = Elements.DirectionalLight(Elements.Color(
                             1.0, 1.0, 1.0, 1.0), 1.0, Elements.Transform(em))
                         model.add_element(light)
+
                         sun_vector = Elements.Line(Elements.Vector3(
-                            x, y, z), Elements.Vector3(0, 0, 0))
+                            x * radius, y * radius, z * radius), Elements.Vector3(0, 0, 0))
                         sun_model_curve = Elements.ModelCurve(
                             sun_vector, material)
                         model.add_element(sun_model_curve)

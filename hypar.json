@@ -4,7 +4,14 @@
   "name": "Ladybug Sunpath",
   "description": "The Ladybug sun path function.",
   "language": "Python",
-  "input_schema": {"type":"object","properties":{"Location":{"description":"The location where the sun path will be calculated.","default":{"coordinates":[-118.405961,34.005765]},"$ref":"https://geojson.org/schema/Point.json"},"Date":{"type":"string","format":"date-time","description":"The time and date which define the sun's position."}}},
+  "model_dependencies": [
+    {
+      "autohide": false,
+      "name": "location",
+      "optional": false
+    }
+  ],
+  "input_schema": {"type":"object","properties":{"Radius":{"description":"The radius of the sun path object created.","type":"number","default":100,"minimum":1,"maximum":1000},"Date":{"type":"string","format":"date-time","description":"The time and date which define the sun's position."}}},
   "outputs": [],
   "repository_url": "https://github.com/hypar-io/function",
   "source_file_key": null,
